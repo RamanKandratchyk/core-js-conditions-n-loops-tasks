@@ -197,7 +197,15 @@ function convertNumberToString(numberStr) {
     }
   }
 
-  return numberStr.split('').map(digitTrans).join(' ');
+  let resStr = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    resStr +=
+      i !== numberStr.length - 1
+        ? `${digitTrans(numberStr[i])} `
+        : digitTrans(numberStr[i]);
+  }
+
+  return resStr;
 }
 
 /**
