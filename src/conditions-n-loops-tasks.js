@@ -437,7 +437,13 @@ function sortByAsc(incomingArray) {
     return [...quickSort(left), ...center, ...quickSort(right)];
   }
 
-  return quickSort(incomingArray);
+  const resArr = quickSort(incomingArray);
+
+  const handleArr = incomingArray;
+  for (let i = 0; i < handleArr.length; i += 1) {
+    handleArr[i] = resArr[i];
+  }
+  return handleArr;
 }
 
 /**
