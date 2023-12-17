@@ -38,8 +38,12 @@ function isPositive(number) {
  *  -5, 0, 5      => 5
  *  -0.1, 0, 0.2  => 0.2
  */
-function getMaxNumber(a, b, c) {
-  return Math.max(a, b, c);
+function getMaxNumber(...arg) {
+  let max = arg[0];
+  for (let i = 0; i < arg.length; i += 1) {
+    if (arg[i] > max) max = arg[i];
+  }
+  return max;
 }
 
 /**
@@ -110,36 +114,38 @@ function isIsoscelesTriangle(a, b, c) {
 function convertToRomanNumerals(num) {
   function onesTrans(ones) {
     switch (ones) {
-      case '1':
+      case 1:
         return 'I';
-      case '2':
+      case 2:
         return 'II';
-      case '3':
+      case 3:
         return 'III';
-      case '4':
+      case 4:
         return 'IV';
-      case '5':
+      case 5:
         return 'V';
-      case '6':
+      case 6:
         return 'VI';
-      case '7':
+      case 7:
         return 'VII';
-      case '8':
+      case 8:
         return 'VIII';
-      case '9':
+      case 9:
         return 'IX';
       default:
         return '';
     }
   }
 
-  return num
-    .toString()
-    .split('')
-    .map((digit, i, strArr) =>
-      i === 0 && strArr.length > 1 ? 'X'.repeat(+digit) : onesTrans(digit)
-    )
-    .join('');
+  let resStr = '';
+  const ones = num % 10;
+  const tens = (num - ones) / 10;
+
+  for (let i = 0; i < tens; i += 1) {
+    resStr += 'X';
+  }
+
+  return resStr + onesTrans(ones);
 }
 
 /**
