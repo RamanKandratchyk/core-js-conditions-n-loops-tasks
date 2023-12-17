@@ -268,8 +268,22 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  function sliceSum(index) {
+    let sum = 0;
+    for (let i = 0; i < index; i += 1) {
+      sum += arr[i];
+    }
+    return sum;
+  }
+
+  const arrSum = sliceSum(arr.length);
+
+  for (let i = 1; i < arr.length; i += 1) {
+    if ((arrSum - arr[i]) / 2 === sliceSum(i)) return i;
+  }
+
+  return -1;
 }
 
 /**
@@ -293,8 +307,91 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(matrixSize) {
+  class FillSpiralMatrix {
+    constructor(size) {
+      this.size = size;
+      this.curPos = [0, 0];
+      this.arr = new Array(size);
+      for (let i = 0; i < size; i += 1) {
+        this.arr[i] = [];
+        for (let j = 0; j < size; j += 1) {
+          this.arr[i][j] = 0;
+        }
+      }
+      this.directions = ['stepRight', 'stepDown', 'stepLeft', 'stepUp'];
+      this.curDirIndex = 0;
+    }
+
+    getCurDirection() {
+      return this.directions[this.curDirIndex];
+    }
+
+    changeDirection() {
+      this.curDirIndex =
+        this.curDirIndex < this.directions.length - 1
+          ? this.curDirIndex + 1
+          : 0;
+    }
+
+    stepRight() {
+      this.curPos[1] += 1;
+    }
+
+    stepRightRevert() {
+      this.curPos[1] -= 1;
+    }
+
+    stepDown() {
+      this.curPos[0] += 1;
+    }
+
+    stepDownRevert() {
+      this.curPos[0] -= 1;
+    }
+
+    stepLeft() {
+      this.curPos[1] -= 1;
+    }
+
+    stepLeftRevert() {
+      this.curPos[1] += 1;
+    }
+
+    stepUp() {
+      this.curPos[0] -= 1;
+    }
+
+    stepUpRevert() {
+      this.curPos[0] += 1;
+    }
+
+    getNextPos() {
+      this[this.getCurDirection()]();
+      if (
+        this.curPos[0] >= this.size ||
+        this.curPos[1] >= this.size ||
+        this.curPos[0] < 0 ||
+        this.curPos[1] < 0 ||
+        this.arr[this.curPos[0]][this.curPos[1]] !== 0
+      ) {
+        this[`${this.getCurDirection()}Revert`]();
+        this.changeDirection();
+        this[this.getCurDirection()]();
+      }
+    }
+
+    fillMatrix() {
+      for (let i = 1; i <= this.size ** 2; i += 1) {
+        this.arr[this.curPos[0]][this.curPos[1]] += i;
+        this.getNextPos();
+      }
+
+      return this.arr;
+    }
+  }
+
+  return new FillSpiralMatrix(matrixSize).fillMatrix();
 }
 
 /**
@@ -311,8 +408,36 @@ function getSpiralMatrix(/* size */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(incomingArray) {
+  function myPush(arr, element) {
+    const array = arr;
+    array[arr.length] = element;
+  }
+
+  function quickSort(array) {
+    if (array.length <= 1) {
+      return array;
+    }
+    const q = array[0];
+    const left = [];
+    const center = [];
+    const right = [];
+
+    for (let i = 0; i < array.length; i += 1) {
+      const cur = array[i];
+      if (cur > q) {
+        myPush(right, cur);
+      } else if (cur < q) {
+        myPush(left, cur);
+      } else {
+        myPush(center, cur);
+      }
+    }
+
+    return [...quickSort(left), ...center, ...quickSort(right)];
+  }
+
+  return quickSort(incomingArray);
 }
 
 /**
