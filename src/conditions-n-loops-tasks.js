@@ -560,7 +560,7 @@ function shuffleChar(str, iterations) {
 function getNearestBigger(number) {
   const digitsArr = [];
   let testDigit = 10;
-  let pivot = 0;
+  let pivot = null;
 
   while (number / testDigit > 0.1) {
     digitsArr.push(Math.floor((number % testDigit) / (testDigit / 10)));
@@ -573,6 +573,8 @@ function getNearestBigger(number) {
       break;
     }
   }
+
+  if (pivot === null) return number;
 
   const rightSideDigits = digitsArr.splice(0, pivot).sort((a, b) => a - b);
   const pivotDigit = digitsArr[0];
