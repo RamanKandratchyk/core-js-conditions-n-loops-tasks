@@ -501,6 +501,8 @@ function sortByAsc(incomingArray) {
  */
 function shuffleChar(str, iterations) {
   let resStr = str;
+  const strArr = [];
+
   for (let i = 0; i < iterations; i += 1) {
     let oddStr = '';
     let evenStr = '';
@@ -509,8 +511,12 @@ function shuffleChar(str, iterations) {
       oddStr += resStr[j + 1];
     }
     resStr = `${evenStr}${oddStr}`;
+    strArr[strArr.length] = resStr;
+
+    if (resStr === str) break;
   }
-  return resStr;
+
+  return strArr[(iterations - 1) % strArr.length];
 }
 
 /**
