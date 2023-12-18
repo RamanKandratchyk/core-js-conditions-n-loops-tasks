@@ -576,23 +576,23 @@ function getNearestBigger(number) {
 
   if (pivot === null) return number;
 
-  const rightSideDigits = digitsArr.splice(0, pivot).sort((a, b) => a - b);
+  const juniorDigits = digitsArr.splice(0, pivot);
   const pivotDigit = digitsArr[0];
 
-  const digitForChange = rightSideDigits
+  const digitForChange = juniorDigits
     .sort((a, b) => a - b)
     .filter((digit) => pivotDigit < digit)[0];
 
-  const digitForChangeIndex = rightSideDigits.findIndex(
+  const digitForChangeIndex = juniorDigits.findIndex(
     (el) => el === digitForChange
   );
 
-  [digitsArr[0], rightSideDigits[digitForChangeIndex]] = [
-    rightSideDigits[digitForChangeIndex],
+  [digitsArr[0], juniorDigits[digitForChangeIndex]] = [
+    juniorDigits[digitForChangeIndex],
     digitsArr[0],
   ];
 
-  const resultArr = [...rightSideDigits.sort((a, b) => b - a), ...digitsArr];
+  const resultArr = [...juniorDigits.sort((a, b) => b - a), ...digitsArr];
 
   return resultArr.reduce((res, cur, i) => res + cur * 10 ** i, 0);
 }
